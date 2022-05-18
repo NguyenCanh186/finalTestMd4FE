@@ -22,7 +22,7 @@ function showAllCity(){
             let content = "";
             for (let i = 0; i < city.length; i++) {
                 content+=`<tr>
-        <td>${city[i].name}</td>
+        <td> <a href="info.html" onclick="showInfo(${city[i].id})">${city[i].name}</a></td>
         <td>${city[i].acreage}</td>
         <td>${city[i].population}</td>
         <td>${city[i].country.name}</td>
@@ -42,7 +42,7 @@ function addNewCity(){
     let name = $('#name').val();
     let acreage = $('#acreage').val();
     let population = $('#population').val();
-    let country = $('#name').val();
+    let country = $('#country').val();
     let gdp = $('#gdp').val();
     let description = $('#description').val();
     let newCity = {
@@ -62,7 +62,7 @@ function addNewCity(){
         },
         type: "POST",
         data: JSON.stringify(newCity),
-        url: "http://localhost:8080/city/create",
+        url: "http://localhost:8080/city/createCity",
         success: showAllCity(),
     });
     event.preventDefault();
@@ -122,6 +122,25 @@ function showEditForm(id){
             $('#description1').val(city.description)
         }
     })
+
+    showCountry();
+}
+
+function showInfo(id){
+    $.ajax({
+        type:"GET",
+        url:`http://localhost:8080/city/findOne/${id}`,
+        success:function (city){
+            $('#name2').val(city.name)
+            $('#acreage2').val(city.acreage)
+            $('#population2').val(city.population)
+            $('#country2').val(city.country)
+            $('#gdp2').val(city.gdp)
+            $('#description2').val(city.description)
+        }
+    })
+    let content= `<span id="name2"></span> la mot thanh pho <span id="description2"></span>  cua <span id="country2"></span>`
+    $("#show").html(content);
     showCountry();
 }
 
